@@ -4,9 +4,11 @@ import { Utensils } from "lucide-react";
 import { Card, CardContent } from "@/shared/ui/card";
 import { useState } from "react";
 import { CategoryType } from "@/shared/types";
+import { CategoryDisplayItem } from "@/features/category/types";
 
 interface RecommendationFormProps {
   onRecommend: (category: CategoryType) => void;
+  categories: CategoryDisplayItem[];
 }
 
 /**
@@ -20,21 +22,15 @@ interface RecommendationFormProps {
  */
 export const RecommendationForm = ({
   onRecommend,
+  categories: availableCategories,
 }: RecommendationFormProps) => {
-  const categories: { id: CategoryType; name: string; emoji: string }[] = [
-    { id: "all", name: "전체", emoji: "🍽️" },
-    { id: "한식", name: "한식", emoji: "🇰🇷" },
-    { id: "양식", name: "양식", emoji: "🍝" },
-    { id: "일식", name: "일식", emoji: "🍣" },
-    { id: "중식", name: "중식", emoji: "🥢" },
-    { id: "아시안", name: "아시안", emoji: "🍜" },
-    { id: "분식", name: "분식", emoji: "🍢" },
-    { id: "카페", name: "카페", emoji: "☕" },
-  ];
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>("all");
+  const categoriesToDisplay = availableCategories;
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryType>("전체");
   const handleRecommend = () => {
     onRecommend(selectedCategory);
   };
+
   return (
     <>
       {/* 카테고리 선택 영역 */}
@@ -42,10 +38,12 @@ export const RecommendationForm = ({
         <CardContent className="p-6">
           <h3 className="text-base text-gray-900 mb-4">음식 종류</h3>
           <div className="grid grid-cols-4 gap-3">
-            {categories.map((category) => (
+            {categoriesToDisplay.map((category) => (
               <button
                 key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
+                onClick={() =>
+                  setSelectedCategory(category.name as CategoryType)
+                }
                 className={`flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200 min-h-[72px] active:scale-95 ${selectedCategory === category.id ? "bg-blue-50 border-2 border-blue-200 shadow-sm scale-105" : "bg-gray-50 border-2 border-transparent hover:bg-gray-100 hover:scale-102"}`}
               >
                 <span className="text-2xl">{category.emoji}</span>
@@ -66,9 +64,9 @@ export const RecommendationForm = ({
         className="w-full h-14 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-xl shadow-xl active:shadow-md transition-all duration-200 active:scale-98 text-base"
       >
         <Utensils className="w-5 h-5 mr-2" />
-        {selectedCategory === "all"
+        {selectedCategory === "전체"
           ? "추천받기"
-          : `${categories.find((category) => category.id === selectedCategory)?.name} 추천받기`}
+          : `${categoriesToDisplay.find((category) => category.name === selectedCategory)?.name} 추천받기`}
       </Button>
     </>
   );

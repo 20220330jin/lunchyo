@@ -1,5 +1,5 @@
 export type CategoryType =
-  | "all"
+  | "전체"
   | "한식"
   | "양식"
   | "일식"

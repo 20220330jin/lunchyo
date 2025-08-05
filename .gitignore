@@ -49,3 +49,5 @@ journal
 
 
 yarn.lock
+
+/lib/generated/prisma

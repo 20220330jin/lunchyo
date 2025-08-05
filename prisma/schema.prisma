@@ -1,0 +1,282 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model certification {
+  user_id              String @id @db.VarChar(30)
+  email                String @db.VarChar(255)
+  certification_number String @db.VarChar(4)
+}
+
+model code {
+  code_id              BigInt      @id @default(autoincrement())
+  del_yn               String?     @db.Char(1)
+  mod_date_time        DateTime?   @db.Timestamp(6)
+  reg_date_time        DateTime?   @db.Timestamp(6)
+  buffer_first_content String?     @db.VarChar(255)
+  code_key             String?     @db.VarChar(255)
+  code_name            String?     @db.VarChar(255)
+  test1                String?     @db.VarChar(255)
+  code_group_id        BigInt?
+  code_group           code_group? @relation(fields: [code_group_id], references: [code_group_id], onDelete: NoAction, onUpdate: NoAction, map: "fkt8wmpi8wl01ktn41tjol0svkl")
+}
+
+model code_group {
+  code_group_id   BigInt    @id @default(autoincrement())
+  del_yn          String?   @db.Char(1)
+  mod_date_time   DateTime? @db.Timestamp(6)
+  reg_date_time   DateTime? @db.Timestamp(6)
+  code_group_key  String?   @db.VarChar(255)
+  code_group_name String?   @db.VarChar(255)
+  code            code[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model member {
+  member_id     BigInt    @id @default(autoincrement())
+  del_yn        String?   @db.Char(1)
+  mod_date_time DateTime? @db.Timestamp(6)
+  reg_date_time DateTime? @db.Timestamp(6)
+  member_type   String?   @db.VarChar(255)
+  password      String?   @db.VarChar(255)
+  username      String?   @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model menu {
+  menu_id            BigInt            @id @default(autoincrement())
+  del_yn             String?           @db.Char(1)
+  mod_date_time      DateTime?         @db.Timestamp(6)
+  reg_date_time      DateTime?         @db.Timestamp(6)
+  menu_category      String?           @db.VarChar(255)
+  menu_image         String?           @db.VarChar(255)
+  menu_name          String?           @db.VarChar(255)
+  search_count       BigInt?
+  total_search_count BigInt?
+  user_id            BigInt?
+  like_temp_count    BigInt?
+  description        String?           @db.VarChar(255)
+  menu_like_count    menu_like_count[]
+}
+
+model menu_like_count {
+  menu_like_count_id BigInt    @id @default(autoincrement())
+  del_yn             String?   @db.Char(1)
+  mod_date_time      DateTime? @db.Timestamp(6)
+  reg_date_time      DateTime? @db.Timestamp(6)
+  menu_id            BigInt?
+  user_id            BigInt?
+  menu               menu?     @relation(fields: [menu_id], references: [menu_id], onDelete: NoAction, onUpdate: NoAction, map: "fkkiriilov66ge0q3u4m480t83v")
+}
+
+model menu_like_history {
+  menu_like_history_id BigInt    @id @default(autoincrement())
+  del_yn               String?   @db.Char(1)
+  mod_date_time        DateTime? @db.Timestamp(6)
+  reg_date_time        DateTime? @db.Timestamp(6)
+  menu_id              BigInt?
+  user_id              String?   @db.VarChar(255)
+}
+
+model place_detail {
+  place_detail_id   BigInt             @id @default(autoincrement())
+  del_yn            String?            @db.Char(1)
+  mod_date_time     DateTime?          @db.Timestamp(6)
+  reg_date_time     DateTime?          @db.Timestamp(6)
+  address_name      String?            @db.VarChar(255)
+  category_name     String?            @db.VarChar(255)
+  distance          String?            @db.VarChar(255)
+  grade_avg         Float?
+  grade_count       Decimal?           @db.Decimal(38, 2)
+  phone             String?            @db.VarChar(255)
+  place_id          BigInt?
+  place_info        String?            @db.VarChar(255)
+  place_name        String?            @db.VarChar(255)
+  place_url         String?            @db.VarChar(255)
+  road_address_name String?            @db.VarChar(255)
+  x                 String?            @db.VarChar(255)
+  y                 String?            @db.VarChar(255)
+  like_count        Decimal?           @db.Decimal(38, 2)
+  like_yn           String?            @db.Char(1)
+  place_grade       place_grade[]
+  place_like_count  place_like_count[]
+}
+
+model place_grade {
+  place_grade_id  BigInt        @id @default(autoincrement())
+  del_yn          String?       @db.Char(1)
+  mod_date_time   DateTime?     @db.Timestamp(6)
+  reg_date_time   DateTime?     @db.Timestamp(6)
+  grade           Int?
+  place_detail_id BigInt?
+  user_id         BigInt?
+  member_id       String?       @db.VarChar(255)
+  place_detail    place_detail? @relation(fields: [place_detail_id], references: [place_detail_id], onDelete: NoAction, onUpdate: NoAction, map: "fkcoqh7wdj8qy310rpk043q7va0")
+}
+
+model place_like_count {
+  place_like_count_id BigInt        @id @default(autoincrement())
+  del_yn              String?       @db.Char(1)
+  mod_date_time       DateTime?     @db.Timestamp(6)
+  reg_date_time       DateTime?     @db.Timestamp(6)
+  user_id             BigInt?
+  place_detail_id     BigInt?
+  place_detail        place_detail? @relation(fields: [place_detail_id], references: [place_detail_id], onDelete: NoAction, onUpdate: NoAction, map: "fk932fbswwbsaminc2pq8misjxl")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model post {
+  post_id         BigInt            @id @default(autoincrement())
+  del_yn          String?           @db.Char(1)
+  mod_date_time   DateTime?         @db.Timestamp(6)
+  reg_date_time   DateTime?         @db.Timestamp(6)
+  content         String?           @db.VarChar(255)
+  user_session    String?           @db.VarChar(255)
+  writer          String?           @db.VarChar(255)
+  user_id         BigInt?
+  category        String?           @db.VarChar(255)
+  title           String?           @db.VarChar(255)
+  created_at      DateTime?         @db.Timestamp(6)
+  updated_at      DateTime?         @db.Timestamp(6)
+  post_hate_count post_hate_count[]
+  post_like_count post_like_count[]
+  reply           reply[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model post_hate_count {
+  post_hate_count_id BigInt    @id
+  del_yn             String?   @db.Char(1)
+  mod_date_time      DateTime? @db.Timestamp(6)
+  reg_date_time      DateTime? @db.Timestamp(6)
+  user_id            BigInt?
+  post_id            BigInt?
+  post               post?     @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "fkjxc6nlgcphpw03fdaavn7pg5a")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model post_like_count {
+  post_like_count_id BigInt    @id
+  del_yn             String?   @db.Char(1)
+  mod_date_time      DateTime? @db.Timestamp(6)
+  reg_date_time      DateTime? @db.Timestamp(6)
+  post_id            BigInt?
+  user_id            BigInt?
+  post               post?     @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "fk7pj3y7qjkd42ah7n79mchnk3j")
+}
+
+model reply {
+  reply_id         BigInt             @id @default(autoincrement())
+  del_yn           String?            @db.Char(1)
+  mod_date_time    DateTime?          @db.Timestamp(6)
+  reg_date_time    DateTime?          @db.Timestamp(6)
+  content          String?            @db.VarChar(255)
+  depth            Int?
+  parent_id        BigInt?
+  reply_category   String?            @db.VarChar(255)
+  user_name        String?            @db.VarChar(255)
+  post_id          BigInt?
+  grade            Int?
+  user_id          BigInt?
+  post             post?              @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "fknpyg5e6pqr2v1y4y6pacte11q")
+  reply_like_count reply_like_count[]
+}
+
+model reply_like_count {
+  reply_like_count_id BigInt    @id
+  del_yn              String?   @db.Char(1)
+  mod_date_time       DateTime? @db.Timestamp(6)
+  reg_date_time       DateTime? @db.Timestamp(6)
+  reply_type          String?   @db.VarChar(255)
+  reply_id            BigInt?
+  user_id             BigInt?
+  reply               reply?    @relation(fields: [reply_id], references: [reply_id], onDelete: NoAction, onUpdate: NoAction, map: "fk4d382r60xlojna1ggap1euv5c")
+}
+
+model sign_in_history {
+  sign_in_history_id BigInt    @id @default(autoincrement())
+  del_yn             String?   @db.Char(1)
+  mod_date_time      DateTime? @db.Timestamp(6)
+  reg_date_time      DateTime? @db.Timestamp(6)
+  user_id            String?   @db.VarChar(255)
+  platform_info      String?   @db.VarChar(255)
+}
+
+model spring_session {
+  primary_id                String                      @id(map: "spring_session_pk") @db.Char(36)
+  session_id                String                      @unique(map: "spring_session_ix1") @db.Char(36)
+  creation_time             BigInt
+  last_access_time          BigInt
+  max_inactive_interval     Int
+  expiry_time               BigInt
+  principal_name            String?                     @db.VarChar(100)
+  spring_session_attributes spring_session_attributes[]
+
+  @@index([expiry_time], map: "spring_session_ix2")
+  @@index([principal_name], map: "spring_session_ix3")
+}
+
+model spring_session_attributes {
+  session_primary_id String         @db.Char(36)
+  attribute_name     String         @db.VarChar(200)
+  attribute_bytes    Bytes
+  spring_session     spring_session @relation(fields: [session_primary_id], references: [primary_id], onDelete: Cascade, onUpdate: NoAction, map: "spring_session_attributes_fk")
+
+  @@id([session_primary_id, attribute_name], map: "spring_session_attributes_pk")
+}
+
+model test {
+  id   BigInt  @id
+  test String? @db.VarChar(255)
+}
+
+model user_ly {
+  user_id          String  @id @db.VarChar(30)
+  password         String  @db.VarChar(255)
+  email            String  @db.VarChar(255)
+  type             String  @db.VarChar(10)
+  role             String  @db.VarChar(10)
+  nick_name        String? @db.VarChar(255)
+  nickname         String? @db.VarChar(255)
+  user_profile_url String? @db.VarChar(255)
+  name             String? @db.VarChar(255)
+}
+
+model user_tm {
+  id            BigInt    @id @default(autoincrement())
+  del_yn        String?   @db.Char(1)
+  mod_date_time DateTime? @db.Timestamp(6)
+  reg_date_time DateTime? @db.Timestamp(6)
+  email         String?   @db.VarChar(255)
+  name          String?   @db.VarChar(255)
+  password      String?   @db.VarChar(255)
+}
+
+model vue_board {
+  id            BigInt    @id @default(autoincrement())
+  author        String?   @db.VarChar(255)
+  content       String?   @db.VarChar(255)
+  title         String?   @db.VarChar(255)
+  del_yn        String?   @db.Char(1)
+  mod_date_time DateTime? @db.Timestamp(6)
+  reg_date_time DateTime? @db.Timestamp(6)
+  views         Int?
+}
+
+model categories {
+  id          String   @id @default(uuid()) @map("category_id")
+  name        String   @unique
+  description String?
+  emoji       String
+  delYn       Boolean  @default(false) @map("del_yn")
+  regUser     String?  @map("reg_user")
+  modUser     String?  @map("mod_user")
+  regDateTime DateTime @default(now()) @map("reg_date_time")
+  modDateTime DateTime @updatedAt @map("mod_date_time")
+}
