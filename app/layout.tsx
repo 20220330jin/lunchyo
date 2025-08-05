@@ -3,7 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "오늘 뭐 먹지? - lunchyo",
-  description: "점심 메뉴 추천부터 주변 맛집 탐색까지, 당신의 점심 고민을 해결해 드립니다.",
+  description:
+    "점심 메뉴 추천부터 주변 맛집 탐색까지, 당신의 점심 고민을 해결해 드립니다.",
 };
 
 export default function RootLayout({
@@ -13,9 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
