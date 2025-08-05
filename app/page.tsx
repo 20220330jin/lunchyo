@@ -1,103 +1,99 @@
-import Image from "next/image";
+"use client";
+import { Utensils } from "lucide-react";
+import { RecommendationForm } from "@/features/recommend-menu/ui/RecommendationForm";
+import { useState } from "react";
+import { CategoryType, Menu } from "@/shared/types";
+import { MenuCard } from "@/entities/menu/ui/MenuCard";
+import { Button } from "@/shared/ui/button";
 
-export default function Home() {
+/**
+ * HomePage
+ * - 메인 페이지
+ *
+ * @description
+ * 사용자가 보게 될 가장 첫 화면
+ *
+ * @author hjkim
+ * @constructor
+ */
+// TODO (20250804/x) (확인필요) function vs const -> hoisting 문제로 인해 function으로 작성 - hjkim
+export default function HomePage() {
+  // TEMP 추천 폼 or 추천 메뉴 제어
+  const [showRecommendationForm, setShowRecommendationForm] = useState(true);
+  const [recommendedMenus, setRecommendedMenus] = useState<Menu[]>([]);
+  const handleMenuRecommendation = (selectedCategory: CategoryType) => {
+    // 실제 API 호출 대신 임시 데이터 생성
+    const dummyMenus: Menu[] = [
+      {
+        menuId: "1",
+        menuName: "김치찌개",
+        menuCategory: "한식",
+        menuDescription: "얼큰하고 맛있는 김치찌개입니다.",
+      },
+      {
+        menuId: "2",
+        menuName: "파스타",
+        menuCategory: "양식",
+        menuDescription: "크림 소스가 일품인 파스타입니다.",
+      },
+      {
+        menuId: "3",
+        menuName: "초밥",
+        menuCategory: "일식",
+        menuDescription: "신선한 재료로 만든 초밥 세트입니다.",
+      },
+    ];
+    // 선택된 카테고리에 따라 필터링 (임시)
+    const filtered =
+      selectedCategory === "all"
+        ? dummyMenus
+        : dummyMenus.filter((menu) => menu.menuCategory === selectedCategory);
+
+    setRecommendedMenus(filtered);
+    setShowRecommendationForm(false); // 추천 메뉴 목록을 보여주도록 상태 변경
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="flex min-h-screen flex-col items-center justify-center">
+      <div className="w-full max-w-md space-y-8 pt-8">
+        {/* 상단 아이콘 및 헤드라인 */}
+        <div className="text-center space-y-6">
+          {/* 아이콘 영역 */}
+          <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+            <Utensils className="w-12 h-12 text-blue-600" />
+          </div>
+          {/* 헤드라인 영역 */}
+          <div className="space-y-3">
+            <h2 className="text-2xl text-gray-900">오늘 점심 메뉴를</h2>
+            <h2 className="text-2xl text-gray-900">추천 받아보세요!!</h2>
+            <p className="text-gray-600 pt-1">
+              원하는 음식 종류를 선택해주세요.
+            </p>
+            {/* 카테고리 선택 및 추천받기 버튼 영역 TODO (20250804/x) (구현예정) -hjkim */}
+            {showRecommendationForm ? (
+              <RecommendationForm onRecommend={handleMenuRecommendation} />
+            ) : (
+              <div className="space-y-4">
+                <div className="text-center">
+                  <h2 className="text-xl text-gray-900 mb-1">추천 메뉴</h2>
+                  <p className="text-sm text-gray-600">
+                    선택된 카테고리에 따라 메뉴를 추천했어요!
+                  </p>
+                  {recommendedMenus.map((menu) => (
+                    <MenuCard key={menu.menuId} menu={menu} />
+                  ))}
+                  <Button
+                    onClick={() => setShowRecommendationForm(true)}
+                    className="w-full h-12 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl shadow-sm"
+                  >
+                    다시 추천받기
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 }
