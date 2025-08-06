@@ -1,6 +1,6 @@
 import {Button} from "@/components/ui/button";
 import {ArrowLeft, RotateCcw} from "lucide-react";
-import {Tabs, TabsList} from "@/components/ui/tabs";
+import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 export default function Home() {
     return (
@@ -19,7 +19,12 @@ export default function Home() {
                     </Button>
                 </header>
                 <Tabs>
-                    <TabsList></TabsList>
+                    <TabsList>
+                        <TabsTrigger value="recommend">추천받기</TabsTrigger>
+                        <TabsTrigger value="rolette">룰렛</TabsTrigger>
+                        <TabsTrigger value="voting">투표</TabsTrigger>
+                        <TabsTrigger value="history">기록</TabsTrigger>
+                    </TabsList>
                 </Tabs>
             </div>
         </div>
