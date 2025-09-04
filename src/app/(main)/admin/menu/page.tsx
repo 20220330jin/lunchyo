@@ -59,6 +59,7 @@ export default function AdminMenuPage() {
         })
     }
     /* 메뉴 생성 handler */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleSubmit = () => {
         createMenuMutation.mutate(menuParam, {
             onSuccess: () => {
