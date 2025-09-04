@@ -15,6 +15,20 @@
       "when": 1756876046693,
       "tag": "0001_milky_firedrake",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1756979759605,
+      "tag": "0002_shiny_shotgun",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1756984886978,
+      "tag": "0003_medical_scourge",
+      "breakpoints": true
     }
   ]
 }

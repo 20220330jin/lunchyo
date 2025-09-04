@@ -344,4 +344,6 @@ export const menus = pgTable('menus', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
     category: categoryEnum('category').notNull(),
+    description: text('description'),
+    image: text('image'),
 });
