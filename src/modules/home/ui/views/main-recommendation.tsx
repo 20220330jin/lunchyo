@@ -18,6 +18,7 @@ export const MainRecommendation = () => {
      * Hooks
      */
     /* react query */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {mutate, data, isPending, isError, error} = useMenuRecommendationMutation()
 
     /**

@@ -79,6 +79,7 @@ export const member = pgTable("member", {
 	memberType: varchar("member_type", { length: 255 }),
 	password: varchar({ length: 255 }),
 	username: varchar({ length: 255 }),
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 }, (table) => [
 	check("member_member_type_check", sql`(member_type)::text = ANY (ARRAY[('GENERAL'::character varying)::text, ('ADMIN'::character varying)::text])`),
 ]);
@@ -337,7 +338,7 @@ export const springSessionAttributes = pgTable("spring_session_attributes", {
 	sessionPrimaryId: char("session_primary_id", { length: 36 }).notNull(),
 	attributeName: varchar("attribute_name", { length: 200 }).notNull(),
 	// TODO: failed to parse database type 'bytea'
-	attributeBytes: unknown("attribute_bytes").notNull(),
+	attributeBytes: text("attribute_bytes").notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.sessionPrimaryId],

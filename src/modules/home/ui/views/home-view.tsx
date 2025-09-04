@@ -20,6 +20,7 @@ export const HomeView = () => {
      * States
      */
     /* 추천페이지 헤더 노출 제어 state */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [showHeader, setShowHeader] = useState<boolean>(true);
     /* 탭 제어 state */
     const [activeTab, setActiveTab] = useState<string>("recommend");
@@ -29,6 +30,7 @@ export const HomeView = () => {
      */
     /* 추천페이지 진입시 탭 노출 제어 */
     // 탭 네비게이션 표시 여부 결정
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const shouldShowTabs = !(activeTab === 'recommend' && !showHeader);
 
     /**

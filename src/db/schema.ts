@@ -95,6 +95,7 @@ export const member = pgTable("member", {
     memberType: varchar("member_type", { length: 255 }),
     password: varchar({ length: 255 }),
     username: varchar({ length: 255 }),
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 }, (table) => [
     check("member_member_type_check", sql`(member_type)::text = ANY (ARRAY[('GENERAL'::character varying)::text, ('ADMIN'::character varying)::text])`),
 ]);

@@ -1,6 +1,5 @@
 'use client'
 import {Button} from "@/components/ui/button";
-import {useHeader} from "@/context/header-context";
 import {ArrowLeft, Home, Menu, Settings} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 
