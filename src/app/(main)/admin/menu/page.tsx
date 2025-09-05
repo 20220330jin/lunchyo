@@ -2,9 +2,11 @@
 import AdminMenu from "@/modules/admin/ui/views/admin-menu";
 import {ChangeEvent, useState} from "react";
 import {Menu} from "@/modules/home/types/recommendation";
-import {CreateMenuRequest} from "@/modules/admin/types/admin.api.type";
+import {CreateMenuRequest, GetMenusRequest} from "@/modules/admin/types/admin.api.type";
 import {adminInitializer} from "@/modules/admin/types/admin.initializer";
 import {useUploadUrlMutation, useCreateMenuMutation} from "@/modules/admin/queries/use-admin-mutations";
+import {useGetMenusQuery} from "@/modules/admin/queries/use-admin-queries";
+import toast from "react-hot-toast";
 
 export default function AdminMenuPage() {
     /**
@@ -12,6 +14,7 @@ export default function AdminMenuPage() {
      */
     const uploadUrlMutation = useUploadUrlMutation();
     const createMenuMutation = useCreateMenuMutation();
+
 
     /**
      * States
@@ -25,6 +28,10 @@ export default function AdminMenuPage() {
     // const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
     /* 메뉴 추가/수정 팝업 오픈 제어 */
     const [isOpenMenuModal, setIsOpenMenuModal] = useState<boolean>(false);
+    /* 메뉴 조회 요청 파라미터 state */
+    const [searchMenuParam, setSearchMenuParam] = useState<GetMenusRequest>(adminInitializer.INITIAL_GET_MENUS_REQUEST_PARAM);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {data: menus, isLoading, error} = useGetMenusQuery(searchMenuParam);
 
     /**
      * Handlers
@@ -59,19 +66,32 @@ export default function AdminMenuPage() {
         })
     }
     /* 메뉴 생성 handler */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleSubmit = () => {
-        createMenuMutation.mutate(menuParam, {
-            onSuccess: () => {
-                handleMenuModal();
-            },
-            onError: (error) => {
-                console.log(error)
-            }
-        })
+        if (isEditingMenu) {
+            console.log('수정모드')
+        } else {
+            createMenuMutation.mutate(menuParam, {
+                onSuccess: () => {
+                    toast.success('메뉴가 등록되었습니다.')
+                    handleMenuModal();
+                },
+                onError: (error) => {
+                    console.log(error)
+                    toast.error('메뉴 등록에 실패하였습니다.')
+                }
+            })
+        }
+    }
+    /* 검색 조건 변경 handler */
+    const handleSearchParam = (key: keyof CreateMenuRequest, value: string) => {
+        setSearchMenuParam(({
+            ...searchMenuParam,
+            [key]: value,
+        }))
     }
 
     return <AdminMenu isEditingMenu={isEditingMenu} menuParam={menuParam} handleParam={handleParam}
                       isUploading={uploadUrlMutation.isPending} isOpenMenuModal={isOpenMenuModal}
-                      handleMenuModal={handleMenuModal} handleImageChange={handleImageChange}/>
+                      handleMenuModal={handleMenuModal} handleImageChange={handleImageChange}
+                      handleSubmit={handleSubmit} handleSearchParam={handleSearchParam} searchMenuParam={searchMenuParam} menus={menus}/>
 }

@@ -1,0 +1,29 @@
+import {GetMenusResponse} from "@/modules/admin/types/admin.api.type";
+import {MenuCard} from "@/modules/home/ui/components/MenuCard";
+
+interface MainRecommendationResultProps {
+    menus: GetMenusResponse[];
+    selectedCategory: CategoryType;
+}
+
+export const MainRecommendationResult = ({menus, selectedCategory}: MainRecommendationResultProps) => {
+    return (
+        <div className="space-y-6">
+            <div className="text-center">
+                <h2 className="text-xl text-foreground mb-1">추천 메뉴</h2>
+                <p className="text-sm text-muted-foreground">{selectedCategory === 'all' ? '전체' : selectedCategory} 메뉴를 추천했어요.</p>
+            </div>
+            {/* 메뉴 퀴즈 */}
+            <div>퀴즈</div>
+            <div className="space-y-4">
+                {menus.map((menu) => (
+                    <div key={menu.name} className={`transform transition-all duration-500 ease-out`}>
+                        <MenuCard menu={menu} />
+                    </div>
+                ))}
+                {/* 스켈레톤 효과 */}
+                <div />
+            </div>
+        </div>
+    )
+}

@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
         if (!fileName || !fileType) {
             return NextResponse.json({message: 'File name and type are required'}, {status: 400})
         }
-        const uniqueKey = `${uuid()}-${fileName}`;
+        const uniqueKey = `images/${uuid()}-${fileName}`;
         const putCommend = new PutObjectCommand({
             Bucket: process.env.AWS_S3_BUCKET_NAME!,
             Key: uniqueKey,

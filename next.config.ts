@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
                 protocol: 'https',
                 hostname: 'elasticbeanstalk-ap-northeast-2-975050238551.s3.ap-northeast-2.amazonaws.com',
                 port: '',
-                pathname: '/images/**'
+                pathname: '/**'
             }
         ]
     }

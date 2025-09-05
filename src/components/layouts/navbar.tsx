@@ -9,7 +9,7 @@ export const Navbar = () => {
 
     if (pathname.startsWith("/admin")) {
         return (
-            <Tabs defaultValue="dashboard" className="w-full">
+            <Tabs defaultValue="adminMenu" className="w-full">
                 <AdminNavbar />
             </Tabs>
         )

@@ -36,7 +36,7 @@ export const GlobalHeader = () => {
                             <Button variant="ghost" size="icon">
                                 <Menu className="w-5 h-5"/>
                             </Button>
-                            <Button variant="ghost" size="icon" onClick={() => router.push("/admin")}>
+                            <Button variant="ghost" size="icon" onClick={() => router.push("/admin/menu")}>
                                 <Settings className="w-5 h-5"/>
                             </Button>
                         </>

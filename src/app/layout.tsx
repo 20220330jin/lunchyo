@@ -3,6 +3,8 @@ import type {Metadata} from "next";
 import "./globals.css";
 import {Inter} from "next/font/google";
 import QueryProvider from "@/components/providers/query-provider";
+import {LoadingProvider} from "@/context/loading-context";
+import {GlobalLoadingOverlay} from "@/components/ui/global-loading-overlay";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -21,9 +23,12 @@ export default function RootLayout({
         <body
             className={inter.className}
         >
-        <QueryProvider>
-            {children}
-        </QueryProvider>
+        <LoadingProvider>
+            <QueryProvider>
+                {children}
+            </QueryProvider>
+            <GlobalLoadingOverlay />
+        </LoadingProvider>
         </body>
         </html>
     );

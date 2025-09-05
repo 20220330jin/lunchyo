@@ -6,6 +6,9 @@ import {CategoryType} from "@/modules/home/types";
 import {useState} from "react";
 import {UI_CATEGORIES} from "@/constants/category";
 import {useMenuRecommendationMutation} from "@/modules/home/queries/use-menu-recommendation-mutation";
+import {useLoading} from "@/context/loading-context";
+import {useRouter} from "next/navigation";
+import {MainRecommendationResult} from "@/modules/home/ui/views/main-recommendation-result";
 
 /**
  * 메뉴 추천 페이지
@@ -20,6 +23,13 @@ export const MainRecommendation = () => {
     /* react query */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {mutate, data, isPending, isError, error} = useMenuRecommendationMutation()
+    const {showLoading, hideLoading} = useLoading();
+    const router = useRouter();
+
+    /**
+     * States
+     */
+    const [isResultReady, setIsResultReady] = useState<boolean>(false);
 
     /**
      * Variables
@@ -44,7 +54,17 @@ export const MainRecommendation = () => {
     /* 추천받기 버튼 handler */
     const handleRecommend = () => {
         console.log('handleRecommend');
-        mutate({category: selectedCategory})
+        showLoading();
+        mutate({category: selectedCategory},{
+            onSuccess: (data) => {
+                hideLoading();
+                setIsResultReady(true);
+                // router.push(`/recommendation/${selectedCategory}`)
+            }
+        })
+    }
+    if(isResultReady) {
+        return <MainRecommendationResult menus={data.menus} selectedCategory={selectedCategory} />
     }
     return (
         <div className="space-y-8 pt-8">
