@@ -1,23 +1,30 @@
-import {GetMenusResponse} from "@/modules/admin/types/admin.api.type";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {ImageWithFallback} from "@/components/ImageWithFallback";
 import {Heart, MapPin, Share2, TrendingUp, Users} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import { Menu } from "@/core/types/menu.type";
 
 interface MenuCardProps {
-    menu: GetMenusResponse;
+    menu: Menu;
 }
 
-export const MenuCard = ({menu}: GetMenusResponse) => {
+export const MenuCard = ({menu}: MenuCardProps) => {
     return (
         <Card
             className="group overflow-hidden cursor-pointer transition-all duration-300 ease-out bg-white hover:shadow-xl hover:-translate-y-1 border-0 active:scale-98">
             <div className="relative">
                 {/* 이미지 영역 */}
                 <div className="relative w-full h-48 overflow-hidden">
-                    <ImageWithFallback src={menu.image} alt={menu.name}
-                                       className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"/>
+                    {menu.image ? (
+                        <ImageWithFallback src={menu.image} alt={menu.name}
+                                           fill
+                                           className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"/>
+                    ) : (
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                            <span className="text-gray-400 text-sm">No Image</span>
+                        </div>
+                    )}
                     <div
                         className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300"/>
                     <Badge variant="secondary"

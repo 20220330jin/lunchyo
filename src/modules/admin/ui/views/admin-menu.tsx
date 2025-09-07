@@ -14,7 +14,7 @@ import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {UI_CATEGORIES} from "@/constants/category";
 import {Textarea} from "@/components/ui/textarea";
-import {Menu} from "@/modules/home/types/recommendation";
+import { Menu } from "@/core/types/menu.type";
 import {CreateMenuRequest, GetMenusRequest, GetMenusResponse} from "@/modules/admin/types/admin.api.type";
 import Image from "next/image";
 import {ChangeEvent} from "react";

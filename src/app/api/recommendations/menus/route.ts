@@ -19,14 +19,15 @@ export async function GET(request: NextRequest) {
             query = query.where(eq(menus.category, category))
         }
 
-        const recommendedMenus = await query.orderBy(sql`RANDOM
-        ()`).limit(5);
+        const recommendedMenusFromDb = await query.orderBy(sql`RANDOM()`).limit(5);
 
-        const response: GetMenuRecommendationResponse = {
-            menus: recommendedMenus
-        }
+        const clientReadyMenus: GetMenuRecommendationResponse = recommendedMenusFromDb.map(menu => ({
+            ...menu,
+            description: menu.description ?? undefined,
+            image: menu.image ?? undefined,
+        }));
 
-        return NextResponse.json(response);
+        return NextResponse.json(clientReadyMenus);
     } catch (error) {
         console.error('메뉴 추천 중 에러 발생', error);
         return NextResponse.json({message: '서버 내부 오류가 발생했습니다.'}, {status: 500})

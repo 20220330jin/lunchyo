@@ -25,6 +25,7 @@ export const MainRecommendation = () => {
     const {mutate, data, isPending, isError, error} = useMenuRecommendationMutation()
     const {showLoading, hideLoading} = useLoading();
     const router = useRouter();
+    console.log(router);
 
     /**
      * States
@@ -59,12 +60,13 @@ export const MainRecommendation = () => {
             onSuccess: (data) => {
                 hideLoading();
                 setIsResultReady(true);
+                console.log(data)
                 // router.push(`/recommendation/${selectedCategory}`)
             }
         })
     }
-    if(isResultReady) {
-        return <MainRecommendationResult menus={data.menus} selectedCategory={selectedCategory} />
+    if(isResultReady && data) {
+        return <MainRecommendationResult menus={data} selectedCategory={selectedCategory} />
     }
     return (
         <div className="space-y-8 pt-8">

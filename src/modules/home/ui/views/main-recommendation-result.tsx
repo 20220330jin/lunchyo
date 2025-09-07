@@ -1,8 +1,9 @@
-import {GetMenusResponse} from "@/modules/admin/types/admin.api.type";
 import {MenuCard} from "@/modules/home/ui/components/MenuCard";
+import {CategoryType} from "@/modules/home/types";
+import {GetMenuRecommendationResponse} from "@/modules/home/types/recommendation";
 
 interface MainRecommendationResultProps {
-    menus: GetMenusResponse[];
+    menus: GetMenuRecommendationResponse;
     selectedCategory: CategoryType;
 }
 

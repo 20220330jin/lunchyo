@@ -12,11 +12,15 @@ const compat = new FlatCompat({
 const eslintConfig = [
     ...compat.extends("next/core-web-vitals", "next/typescript"),
     {
+        rules: {
+            // "no-console": "warn", // 콘솔 경고 추가
+        },
         ignores: [
-            "build/**",       // 예: build 폴더 내 모든 파일 무시
-            "dist/**",        // dist 폴더 무시
-            "node_modules/",  // node_modules 기본 제외 대상
-            "figma_20250805/"
+            "build/**",
+            "dist/**",
+            "node_modules/",
+            "figma_20250805/",
+            ".next/**"
         ],
     },
 ];

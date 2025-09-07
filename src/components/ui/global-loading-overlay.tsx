@@ -5,8 +5,10 @@ import {useEffect, useState} from "react";
 export const GlobalLoadingOverlay = () => {
     const {isLoading} = useLoading();
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    console.log(currentMessageIndex);
     console.log('isLoading', isLoading);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const loadingMessages = [
         '곧 추천 메뉴가 준비됩니다. 잠시만 기다려주세요.',
         '김현진입니다.',
@@ -20,7 +22,7 @@ export const GlobalLoadingOverlay = () => {
         }, 800);
 
         return () => clearInterval(interval);
-    }, [isLoading, loadingMessages.length])
+    }, [isLoading, loadingMessages, loadingMessages.length])
 
     if (!isLoading) {
         return null;

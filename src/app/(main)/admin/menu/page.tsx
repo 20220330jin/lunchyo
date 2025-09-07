@@ -1,7 +1,7 @@
 'use client'
 import AdminMenu from "@/modules/admin/ui/views/admin-menu";
 import {ChangeEvent, useState} from "react";
-import {Menu} from "@/modules/home/types/recommendation";
+import { Menu } from "@/core/types/menu.type";
 import {CreateMenuRequest, GetMenusRequest} from "@/modules/admin/types/admin.api.type";
 import {adminInitializer} from "@/modules/admin/types/admin.initializer";
 import {useUploadUrlMutation, useCreateMenuMutation} from "@/modules/admin/queries/use-admin-mutations";
