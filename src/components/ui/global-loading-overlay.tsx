@@ -2,27 +2,24 @@
 import {useLoading} from "@/context/loading-context";
 import {useEffect, useState} from "react";
 
+const loadingMessages = [
+    '곧 추천 메뉴가 준비됩니다. 잠시만 기다려주세요.',
+    '김현진입니다.',
+    '양영조입니다.'
+];
+
 export const GlobalLoadingOverlay = () => {
     const {isLoading} = useLoading();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-    console.log(currentMessageIndex);
-    console.log('isLoading', isLoading);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const loadingMessages = [
-        '곧 추천 메뉴가 준비됩니다. 잠시만 기다려주세요.',
-        '김현진입니다.',
-        '양영조입니다.'
-    ]
 
     useEffect(() => {
-        console.log('loading', loadingMessages);
         const interval = setInterval(() => {
             setCurrentMessageIndex((prev) => (prev + 1) % loadingMessages.length);
         }, 800);
 
         return () => clearInterval(interval);
-    }, [isLoading, loadingMessages, loadingMessages.length])
+    }, [isLoading])
 
     if (!isLoading) {
         return null;

@@ -56,7 +56,7 @@ export const MainRecommendation = () => {
     const handleRecommend = () => {
         console.log('handleRecommend');
         showLoading();
-        mutate({category: selectedCategory},{
+        mutate({category: selectedCategory}, {
             onSuccess: (data) => {
                 hideLoading();
                 setIsResultReady(true);
@@ -65,8 +65,10 @@ export const MainRecommendation = () => {
             }
         })
     }
-    if(isResultReady && data) {
-        return <MainRecommendationResult menus={data} selectedCategory={selectedCategory} />
+    if (isResultReady && data) {
+        return (
+                <MainRecommendationResult menus={data} selectedCategory={selectedCategory}/>
+        )
     }
     return (
         <div className="space-y-8 pt-8">

@@ -18,7 +18,6 @@ export default function RootLayout({
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
-    console.log('TEST LINT ERROR');
     return (
         <html lang="en">
         <body
