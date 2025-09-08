@@ -5,6 +5,7 @@ import {Inter} from "next/font/google";
 import QueryProvider from "@/components/providers/query-provider";
 import {LoadingProvider} from "@/context/loading-context";
 import {GlobalLoadingOverlay} from "@/components/ui/global-loading-overlay";
+import { LocationProvider } from "@/context/location-context"; // Import LocationProvider
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -25,7 +26,9 @@ export default function RootLayout({
         >
         <LoadingProvider>
             <QueryProvider>
-                {children}
+                <LocationProvider> {/* Wrap children with LocationProvider */}
+                    {children}
+                </LocationProvider>
             </QueryProvider>
             <GlobalLoadingOverlay />
         </LoadingProvider>

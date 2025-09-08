@@ -3,6 +3,8 @@ import {Button} from "@/components/ui/button";
 import {MapPin, SlidersHorizontal, Star} from "lucide-react";
 import {Menu} from "@/core/types/menu.type";
 import {useState} from "react";
+import {useRestaurants} from "@/modules/home/queries/use-restaurant-query";
+import {RestaurantCard} from "@/modules/home/ui/components/RestaurantCard";
 
 interface RestaurantBottomSheetProps {
     isOpen: boolean;
@@ -18,6 +20,11 @@ export const RestaurantBottomSheet = ({isOpen, onClose, selectedMenu}: Restauran
         {id: 'rating', name: '평점순', icon: Star},
         {id: 'popular', name: '인기순', icon: SlidersHorizontal}
     ] as const;
+    const searchQuery = selectedMenu ? selectedMenu.name : '';
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {restaurants, isLoading, isError, error} = useRestaurants(searchQuery);
+    console.log(restaurants);
     return (
         <Sheet open={isOpen} onOpenChange={onClose}>
             <SheetContent side="bottom" className="h-[90vh] rounded-t-2xl border-t-0 bg-gray-50 p-0">
@@ -51,7 +58,8 @@ export const RestaurantBottomSheet = ({isOpen, onClose, selectedMenu}: Restauran
                     </div>
                     {/* 통계 카드 */}
                     <div className="grid grid-cols-3 gap-3 mb-6">
-                        <div className="bg-white rounded-xl p-3 text-center shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div
+                            className="bg-white rounded-xl p-3 text-center shadow-sm hover:shadow-md transition-shadow duration-200">
                             <div className="text-lg text-blue-600 mb-1">4.6</div>
                             <div className="text-xs text-gray-600 flex items-center justify-center gap-1">
                                 <Star className="w-3 h-3 fill-yellow-400 text-yellow-400"/>
@@ -62,10 +70,16 @@ export const RestaurantBottomSheet = ({isOpen, onClose, selectedMenu}: Restauran
                     {/* 맛집 리스트 */}
                     <div className={`flex-1 overflow-y-auto min-h-0 scrollbar-thin `}>
                         <div className="space-y-3 pb-4">
-                            <div className="text-center py-12">
-                                <div className="text-gray-500 mb-2">😅</div>
-                                <div className="text-gray-600">선택한 메뉴와 관련된 맛집이 없어요.</div>
-                            </div>
+                            {restaurants.length === 0 ? (
+                                <div className="text-center py-12">
+                                    <div className="text-gray-500 mb-2">😅</div>
+                                    <div className="text-gray-600">선택한 메뉴와 관련된 맛집이 없어요.</div>
+                                </div>
+                            ) : (
+                                restaurants.map((restaurant) => (
+                                    <RestaurantCard key={restaurant.id} restaurant={restaurant}/>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>
