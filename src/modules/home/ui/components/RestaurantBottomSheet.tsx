@@ -2,9 +2,10 @@ import {Sheet, SheetContent, SheetTitle} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {MapPin, SlidersHorizontal, Star} from "lucide-react";
 import {Menu} from "@/core/types/menu.type";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {useRestaurants} from "@/modules/home/queries/use-restaurant-query";
 import {RestaurantCard} from "@/modules/home/ui/components/RestaurantCard";
+import {useReviewCounts} from "@/modules/review/queries/use-review-queries";
 
 interface RestaurantBottomSheetProps {
     isOpen: boolean;
@@ -13,7 +14,6 @@ interface RestaurantBottomSheetProps {
 }
 
 export const RestaurantBottomSheet = ({isOpen, onClose, selectedMenu}: RestaurantBottomSheetProps) => {
-    console.log('selectedMenuForBottomSheet', selectedMenu);
     const [selectedFilter, setSelectedFilter] = useState<'distance' | 'rating' | 'popular'>('distance');
     const filterOptions = [
         {id: 'distance', name: '거리순', icon: MapPin},
@@ -24,12 +24,25 @@ export const RestaurantBottomSheet = ({isOpen, onClose, selectedMenu}: Restauran
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {restaurants, isLoading, isError, error} = useRestaurants(searchQuery);
-    console.log(restaurants);
+    /* 카카오 ID 모음 */
+    const kakaoPlaceIds = useMemo(() => restaurants?.map(r => r.id) || [], [restaurants])
+    /* 맛집 리뷰 갯수 API */
+    const {reviewCounts} = useReviewCounts(kakaoPlaceIds);
+
+    const restaurantWithReviewCounts = useMemo(() => {
+        const countsMap = new Map(reviewCounts.map(count => [count.kakaoPlaceId, count.count]))
+
+        return restaurants?.map(restaurant => ({
+            ...restaurant,
+            reviewCount: countsMap.get(restaurant.id) || 0,
+        })) || []
+    }, [restaurants, reviewCounts])
+
     return (
         <Sheet open={isOpen} onOpenChange={onClose}>
             <SheetContent side="bottom" className="h-[90vh] rounded-t-2xl border-t-0 bg-gray-50 p-0">
                 <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-6"/>
-                <div className="px-6 pb-6 h-full flex flex-col min-h-0">
+                <div className="px-4 pb-6 h-full flex flex-col min-h-0">
                     {/* 헤더 */}
                     <div className="mb-6">
                         <SheetTitle className="flex items-center gap-2 text-xl mb-2">
@@ -56,27 +69,16 @@ export const RestaurantBottomSheet = ({isOpen, onClose, selectedMenu}: Restauran
                             })}
                         </div>
                     </div>
-                    {/* 통계 카드 */}
-                    <div className="grid grid-cols-3 gap-3 mb-6">
-                        <div
-                            className="bg-white rounded-xl p-3 text-center shadow-sm hover:shadow-md transition-shadow duration-200">
-                            <div className="text-lg text-blue-600 mb-1">4.6</div>
-                            <div className="text-xs text-gray-600 flex items-center justify-center gap-1">
-                                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400"/>
-                                평균 평점
-                            </div>
-                        </div>
-                    </div>
                     {/* 맛집 리스트 */}
                     <div className={`flex-1 overflow-y-auto min-h-0 scrollbar-thin `}>
                         <div className="space-y-3 pb-4">
-                            {restaurants.length === 0 ? (
+                            {restaurantWithReviewCounts.length === 0 ? (
                                 <div className="text-center py-12">
                                     <div className="text-gray-500 mb-2">😅</div>
                                     <div className="text-gray-600">선택한 메뉴와 관련된 맛집이 없어요.</div>
                                 </div>
                             ) : (
-                                restaurants.map((restaurant) => (
+                                restaurantWithReviewCounts.map((restaurant) => (
                                     <RestaurantCard key={restaurant.id} restaurant={restaurant}/>
                                 ))
                             )}

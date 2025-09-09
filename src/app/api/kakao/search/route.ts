@@ -42,7 +42,6 @@ export async function GET(request: NextRequest) {
                 'Referer': 'http://localhost:3000'
             },
         });
-        console.log('4. fetch 응답 상태:', response.status);
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -51,7 +50,7 @@ export async function GET(request: NextRequest) {
         }
 
         const data = await response.json();
-        console.log('5. 카카오 API 응답 데이터:', data);
+        console.log('5. 카카오 API 응답 완료');
         return NextResponse.json(data);
     } catch (error) {
         console.error('API Route 내부 오류:', error);

@@ -11,8 +11,8 @@ export function ImageWithFallback(props: ImageProps) {
     setDidError(true)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { src, alt, style, className, onError, ...rest } = props
-  console.log(onError)
 
     let originalSrc: string | undefined
   if (typeof src === 'string') {

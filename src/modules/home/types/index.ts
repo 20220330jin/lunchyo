@@ -14,5 +14,12 @@ export interface RestaurantType {
     x: string; // 경도
     y: string; // 위도
     distance?: string; // 거리 (중심 좌표 기준)
+    reviewCount: number;
+}
+
+export interface RestaurantForReviewType {
+    kakaoPlaceId: string;
+    restaurantName: string;
+    restaurantAddress: string;
 }
 
